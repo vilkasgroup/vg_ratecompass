@@ -1,0 +1,40 @@
+{
+  "name": "vilkas/vk_ratecompass",
+  "description": "RateCompass integration for Prestashop",
+  "type": "prestashop-module",
+  "require": {
+    "php": ">=7.2.0",
+    "symfony/http-client": "^5.0",
+    "monolog/monolog": "^2.3",
+    "symfony/http-foundation": "^5.4"
+  },
+  "require-dev": {
+    "prestashop/php-dev-tools": "^4.3",
+    "phpunit/phpunit": "^9.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Vilkas\\RateCompass\\": "src/"
+    },
+    "classmap": [
+      "vk_ratecompass.php"
+    ],
+    "exclude-from-classmap": []
+  },
+  "config": {
+    "prepend-autoloader": false,
+    "preferred-install": "dist",
+    "platform": {
+      "php": "7.3.0"
+    }
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit --debug --verbose tests"
+  },
+  "authors": [
+    {
+      "name": "Dat Nguyen",
+      "email": "dat.nguyen@vilkas.fi"
+    }
+  ]
+}
