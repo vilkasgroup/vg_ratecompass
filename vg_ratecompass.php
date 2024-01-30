@@ -10,7 +10,7 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class vk_ratecompass extends Module
+class vg_ratecompass extends Module
 {
     protected $config_form = false;
 
@@ -19,7 +19,7 @@ class vk_ratecompass extends Module
 
     public function __construct()
     {
-        $this->name = 'vk_ratecompass';
+        $this->name = 'vg_ratecompass';
         $this->tab = 'advertising_marketing';
         $this->version = '0.0.1';
         $this->author = 'Vilkas Group Oy';
@@ -32,8 +32,8 @@ class vk_ratecompass extends Module
 
         parent::__construct();
 
-        $this->displayName = $this->trans('RateCompass', [], 'Modules.VkRateCompass.Admin');
-        $this->description = $this->trans('RateCompass for your Prestashop', [], 'Modules.VkRateCompass.Admin');
+        $this->displayName = $this->trans('RateCompass', [], 'Modules.VgRateCompass.Admin');
+        $this->description = $this->trans('RateCompass for your Prestashop', [], 'Modules.VgRateCompass.Admin');
 
         $this->ps_versions_compliancy = ['min' => '1.7.7', 'max' => _PS_VERSION_];
 
@@ -51,9 +51,8 @@ class vk_ratecompass extends Module
      */
     public function install(): bool
     {
-        Configuration::updateValue('VK_RATECOMPASS_DEBUG_MODE', false);
-        Configuration::updateValue('VK_RATECOMPASS_HOST', '');
-        Configuration::updateValue('VK_RATECOMPASS_APIKEY', '');
+        Configuration::updateValue('VG_RATECOMPASS_HOST', '');
+        Configuration::updateValue('VG_RATECOMPASS_APIKEY', '');
 
         return parent::install()
             // && $this->installSQL()
@@ -63,9 +62,9 @@ class vk_ratecompass extends Module
 
     public function uninstall(): bool
     {
-        // Configuration::deleteByName('VK_RATECOMPASS_DEBUG_MODE');
-        // Configuration::deleteByName('VK_RATECOMPASS_HOST');
-        // Configuration::deleteByName('VK_RATECOMPASS_APIKEY');
+        // Configuration::deleteByName('VG_RATECOMPASS_DEBUG_MODE');
+        // Configuration::deleteByName('VG_RATECOMPASS_HOST');
+        // Configuration::deleteByName('VG_RATECOMPASS_APIKEY');
 
         return parent::uninstall()
             // && $this->uninstallSQL()
@@ -74,7 +73,7 @@ class vk_ratecompass extends Module
 
     public static function getLogger(): Logger
     {
-        $logger = new Logger('vk_ratecompass');
+        $logger = new Logger('vg_ratecompass');
         $logger->pushHandler(new StreamHandler(_PS_ROOT_DIR_ . '/var/logs/ratecompass.log'));
 
         return $logger;
@@ -89,14 +88,14 @@ class vk_ratecompass extends Module
          * If values have been submitted in the form, process.
          */
         $message = '';
-        if ((Tools::isSubmit('submit_vk_ratecompass_module')) == true) {
+        if ((Tools::isSubmit('submit_vg_ratecompass_module')) == true) {
             if ($this->postProcess()) {
                 $message = $this->displayConfirmation(
-                    $this->trans('Settings saved successfully.', [], 'Modules.VkRateCompass.Admin')
+                    $this->trans('Settings saved successfully.', [], 'Modules.VgRateCompass.Admin')
                 );
             } else {
                 $message = $this->displayError(
-                    $this->trans('Could not save settings.', [], 'Modules.VkRateCompass.Admin')
+                    $this->trans('Could not save settings.', [], 'Modules.VgRateCompass.Admin')
                 );
             }
         }
@@ -121,7 +120,7 @@ class vk_ratecompass extends Module
         $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG', 0);
 
         $helper->identifier = $this->identifier;
-        $helper->submit_action = 'submit_vk_ratecompass_module';
+        $helper->submit_action = 'submit_vg_ratecompass_module';
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false)
             . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name;
         $helper->token = Tools::getAdminTokenLite('AdminModules');
@@ -158,47 +157,28 @@ class vk_ratecompass extends Module
         return [
             'form' => [
                 'legend' => [
-                    'title' => $this->trans('Settings', [], 'Modules.VkRateCompass.Admin'),
+                    'title' => $this->trans('Settings', [], 'Modules.VgRateCompass.Admin'),
                     'icon' => 'icon-cogs',
                 ],
                 'input' => [
                     [
-                        'type' => 'switch',
-                        'name' => 'VK_RATECOMPASS_DEBUG_MODE',
-                        'label' => $this->trans('Debug mode', [], 'Modules.VkRateCompass.Admin'),
-                        'desc' => $this->trans('Write more debug logs', [], 'Modules.VkRateCompass.Admin'),
-                        'is_bool' => true,
-                        'values' => [
-                            [
-                                'id' => 'active_on',
-                                'value' => true,
-                                'label' => $this->trans('Enabled', [], 'Modules.VkRateCompass.Admin'),
-                            ],
-                            [
-                                'id' => 'active_off',
-                                'value' => false,
-                                'label' => $this->trans('Disabled', [], 'Modules.VkRateCompass.Admin'),
-                            ],
-                        ],
-                    ],
-                    [
                         'type' => 'text',
-                        'name' => 'VK_RATECOMPASS_HOST',
-                        'label' => $this->trans('RateCompass hostname', [], 'Modules.VkRateCompass.Admin'),
-                        'desc' => $this->trans('Get this information from RateCompass. Usually something like: ratecompass.eu', [], 'Modules.VkRateCompass.Admin'),
+                        'name' => 'VG_RATECOMPASS_HOST',
+                        'label' => $this->trans('RateCompass hostname', [], 'Modules.VgRateCompass.Admin'),
+                        'desc' => $this->trans('Get this information from RateCompass. Usually something like: ratecompass.eu', [], 'Modules.VgRateCompass.Admin'),
                         'required' => true
                     ],
                     [
                         'type' => 'text',
-                        'name' => 'VK_RATECOMPASS_APIKEY',
-                        'label' => $this->trans('RateCompass apikey', [], 'Modules.VkRateCompass.Admin'),
-                        'desc' => $this->trans('Get this information from RateCompass dashboard.', [], 'Modules.VkRateCompass.Admin'),
+                        'name' => 'VG_RATECOMPASS_APIKEY',
+                        'label' => $this->trans('RateCompass apikey', [], 'Modules.VgRateCompass.Admin'),
+                        'desc' => $this->trans('Get this information from RateCompass dashboard.', [], 'Modules.VgRateCompass.Admin'),
                         'required' => true
                     ],
                 ],
 
                 'submit' => [
-                    'title' => $this->trans('Save', [], 'Modules.VkRateCompass.Admin'),
+                    'title' => $this->trans('Save', [], 'Modules.VgRateCompass.Admin'),
                 ],
             ]
         ];
@@ -210,9 +190,9 @@ class vk_ratecompass extends Module
     protected function getConfigFormValues(): array
     {
         return [
-            'VK_RATECOMPASS_DEBUG_MODE' => Configuration::get('VK_RATECOMPASS_DEBUG_MODE'),
-            'VK_RATECOMPASS_HOST' => Configuration::get('VK_RATECOMPASS_HOST'),
-            'VK_RATECOMPASS_APIKEY' => Configuration::get('VK_RATECOMPASS_APIKEY'),
+            'VG_RATECOMPASS_DEBUG_MODE' => Configuration::get('VG_RATECOMPASS_DEBUG_MODE'),
+            'VG_RATECOMPASS_HOST' => Configuration::get('VG_RATECOMPASS_HOST'),
+            'VG_RATECOMPASS_APIKEY' => Configuration::get('VG_RATECOMPASS_APIKEY'),
         ];
     }
 
@@ -230,13 +210,13 @@ class vk_ratecompass extends Module
         }
         try {
             $client = new RateCompassClient(
-                Configuration::get("VK_RATECOMPASS_HOST"),
-                Configuration::get("VK_RATECOMPASS_APIKEY")
+                Configuration::get("VG_RATECOMPASS_HOST"),
+                Configuration::get("VG_RATECOMPASS_APIKEY")
             );
             $compass_id = $client->getCompassID();
-            Configuration::updateValue('VK_RATECOMPASS_ID', $compass_id);
+            Configuration::updateValue('VG_RATECOMPASS_ID', $compass_id);
         } catch (Exception | ExceptionInterface $e) {
-            $msg = $this->trans("Error fetching Compass ID: %error%", ["%error%" => $e->getMessage()], "Modules.VkRateCompass.Admin");
+            $msg = $this->trans("Error fetching Compass ID: %error%", ["%error%" => $e->getMessage()], "Modules.VgRateCompass.Admin");
             $this->context->controller->errors[] = $msg;
             return false;
         }
@@ -248,9 +228,9 @@ class vk_ratecompass extends Module
      */
     public function hookHeader()
     {
-        // $host = Configuration::get('VK_RATECOMPASS_HOST');
+        // $host = Configuration::get('VG_RATECOMPASS_HOST');
         $host = 'http://localhost:8000';
-        $apikey = Configuration::get('VK_RATECOMPASS_APIKEY');
+        $apikey = Configuration::get('VG_RATECOMPASS_APIKEY');
         if (empty($host) || empty($apikey)) {
             return;
         }
@@ -258,11 +238,11 @@ class vk_ratecompass extends Module
             $host = 'https://' . $host;
         }
         Tools::getValue('id_product');
-        $compass_id = Configuration::get('VK_RATECOMPASS_ID');
+        $compass_id = Configuration::get('VG_RATECOMPASS_ID');
         $this->context->controller->registerJavascript('ratecompass', $this->_path . '/views/js/embed.js');
 
         Media::addJsDef([
-            'VK_RATECOMPASS_EMBED_URL' => "$host/api/v1/compasses/$compass_id/script.js",
+            'VG_RATECOMPASS_EMBED_URL' => "$host/api/v1/compasses/$compass_id/script.js",
             'VK_RATECOMPASS_PRODUCT_ID' => Tools::getValue('id_product')
         ]);
     }
@@ -304,10 +284,10 @@ class vk_ratecompass extends Module
         ]);
 
         $client = new RateCompassClient(
-            Configuration::get("VK_RATECOMPASS_HOST"),
-            Configuration::get("VK_RATECOMPASS_APIKEY")
+            Configuration::get("VG_RATECOMPASS_HOST"),
+            Configuration::get("VG_RATECOMPASS_APIKEY")
         );
-        $client->postOrder(Configuration::get("VK_RATECOMPASS_ID"), [
+        $client->postOrder(Configuration::get("VG_RATECOMPASS_ID"), [
             'customer_first_name' => $customer->firstname,
             'customer_last_name' => $customer->lastname,
             'customer_email' => $customer->email,

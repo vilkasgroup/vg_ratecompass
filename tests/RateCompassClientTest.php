@@ -25,7 +25,7 @@ class RateCompassClientTest extends TestCase
      */
     protected function setUp(): void
     {
-        $host = getenv('RATECOMPASS_HOST') ?: 'localhost:8000';
+        $host = getenv('RATECOMPASS_HOST') ?: 'http://localhost:8000';
 
         if (!$host || !getenv('RATECOMPASS_APIKEY')) {
             $this->markTestSkipped('RATECOMPASS_HOST and or RATECOMPASS_APIKEY environment variables are not set');

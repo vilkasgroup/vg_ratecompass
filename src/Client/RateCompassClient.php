@@ -70,7 +70,7 @@ class RateCompassClient
             $handler = new StreamHandler(_PS_ROOT_DIR_ . '/var/logs/ratecompass-client.log');
             $handler->setFormatter($formatter);
 
-            $this->logger = new Logger('vk_ratecompass_client');
+            $this->logger = new Logger('vg_ratecompass_client');
             $this->logger->pushHandler($handler);
         } else {
             $this->logger = new NullLogger();

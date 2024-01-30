@@ -1,5 +1,5 @@
 {
-  "name": "vilkas/vk_ratecompass",
+  "name": "vilkas/vg_ratecompass",
   "description": "RateCompass integration for Prestashop",
   "type": "prestashop-module",
   "require": {
@@ -17,7 +17,7 @@
       "Vilkas\\RateCompass\\": "src/"
     },
     "classmap": [
-      "vk_ratecompass.php"
+      "vg_ratecompass.php"
     ],
     "exclude-from-classmap": []
   },
