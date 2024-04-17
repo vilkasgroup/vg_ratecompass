@@ -202,7 +202,7 @@ class RateCompassClient
         try {
             $response = $this->doRequest('GET', $uri, $options);
         } catch (Exception $e) {
-            $this->logger->error('Error getting Service Point', ['exception' => $e]);
+            $this->logger->error('Error getting reviews', ['exception' => $e]);
 
             return [
                 'error' => $e->getMessage(),

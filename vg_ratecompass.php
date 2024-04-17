@@ -228,8 +228,7 @@ class vg_ratecompass extends Module
      */
     public function hookHeader()
     {
-        // $host = Configuration::get('VG_RATECOMPASS_HOST');
-        $host = 'http://localhost:8000';
+        $host = Configuration::get('VG_RATECOMPASS_HOST');
         $apikey = Configuration::get('VG_RATECOMPASS_APIKEY');
         if (empty($host) || empty($apikey)) {
             return;
@@ -239,7 +238,7 @@ class vg_ratecompass extends Module
         }
         Tools::getValue('id_product');
         $compass_id = Configuration::get('VG_RATECOMPASS_ID');
-        $this->context->controller->registerJavascript('ratecompass', $this->_path . '/views/js/embed.js');
+        $this->context->controller->registerJavascript('ratecompass_embed', $this->_path . '/views/js/embed.js');
 
         Media::addJsDef([
             'VG_RATECOMPASS_EMBED_URL' => "$host/api/v1/compasses/$compass_id/script.js",
@@ -269,10 +268,11 @@ class vg_ratecompass extends Module
                 'product_name' => $product->name[(int)$this->context->language->id],
                 'product_id' => $product->id,
                 'product_image_url' => $product_image_url,
-                'product_url' => $product_url
+                'product_url' => $product_url,
+                'product_number' => $product->reference
             ];
         }
-        $this->logger->info('some stuff', [
+        $this->logger->info('Send new order', [
             'customer_first_name' => $customer->firstname,
             'customer_last_name' => $customer->lastname,
             'customer_email' => $customer->email,
